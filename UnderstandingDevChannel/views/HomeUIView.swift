@@ -20,31 +20,12 @@ struct HomeUIView: View {
     @State var loading = false
     
     @State var selectedFilter: VideoFilterType = .all
-    @State var searchText = ""
-    
-    private func filterButtonAction() {
         
-        let filter: VideoFilterType = selectedFilter
-        
-        clearAllVideoResourceEntityData(context)
-        clearAllVideoInfoEntityData(context)
-        
-        do {
-
-            try YoutubeHttp
-                .loadVideosWithFilter(in: context, filter: filter)
-            
-        } catch {
-            print(error)
-        }
-
-    }
-    
     var body: some View {
         
         NavigationStack {
             
-            MainHeaderView()
+            MainHeaderView(searchAction: searchAction)
             
             HStack {
                 
@@ -146,6 +127,50 @@ struct HomeUIView: View {
 
         }
     }
+    
+    private func filterButtonAction() {
+        
+        let filter: VideoFilterType = selectedFilter
+        
+        loading = true
+        
+        clearAllVideoResourceEntityData(context)
+        clearAllVideoInfoEntityData(context)
+        
+        do {
+
+            try YoutubeHttp
+                .loadVideosWithFilter(in: context, filter: filter)
+            
+            loading = false
+            
+        } catch {
+            loading = false
+            print(error)
+        }
+
+    }
+
+    func searchAction(searchText: Any) {
+        print(searchText)
+        loading = true;
+        
+        do {
+            try YoutubeHttp
+                .loadVideosWithFilter(
+                    in: context,
+                    q: searchText as! String,
+                    filter: selectedFilter
+                )
+
+            loading = false
+
+        } catch {
+            loading = false
+            print(error)
+        }
+    }
+    
 }
 
 struct HomeUIView_Previews: PreviewProvider {

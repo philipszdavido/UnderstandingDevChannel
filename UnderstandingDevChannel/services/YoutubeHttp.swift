@@ -168,7 +168,14 @@ class YoutubeHttp {
         
     }
         
-    private func searchVideos(pageToken nextPageToken: String? = nil, domainName: String, params: [String: String] = [:], type: SearchType, completionHandler: @escaping (_ data: (SearchListResponse?, NSError?)) -> Void) throws {
+    private func searchVideos(
+        pageToken nextPageToken: String? = nil,
+        q: String? = nil,
+        domainName: String,
+        params: [String: String] = [:],
+        type: SearchType,
+        completionHandler: @escaping (_ data: (SearchListResponse?, NSError?)) -> Void
+    ) throws {
         
         let part = "snippet"
         var searchType: String!
@@ -183,7 +190,7 @@ class YoutubeHttp {
         case .playlist:
             searchType = "playlist"
             break
-        default :
+        default:
             searchType = "video"
             break
         }
@@ -209,6 +216,10 @@ class YoutubeHttp {
         
         if let nextPageToken = nextPageToken {
             queryItems.append(URLQueryItem(name: "pageToken", value: nextPageToken))
+        }
+        
+        if let query = q {
+            queryItems.append(URLQueryItem(name: "q", value: query))
         }
         
         urlComponents?.queryItems = queryItems;
@@ -371,6 +382,7 @@ class YoutubeHttp {
     static func loadVideosWithFilter(
         in context: NSManagedObjectContext,
         pageToken nextPageToken: String? = nil,
+        q: String? = nil,
         filter: VideoFilterType = .all
     ) throws {
         
@@ -391,9 +403,10 @@ class YoutubeHttp {
         
         try YoutubeHttp.shared.searchVideos(
             pageToken: nextPageToken,
+            q: q,
             domainName: domainName,
             params: params, type: SearchType.video
-        ){ data, error in
+        ) { data, error in
             if let error = error {
                 print("YouTube API request failed", error)
                 return

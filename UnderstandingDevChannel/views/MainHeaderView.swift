@@ -62,12 +62,12 @@ struct MainHeaderView: View {
 
                             if newValue == searchText {
                                 debouncedText = newValue
-                                print("Debounced search: \(debouncedText)")
+                                // print("Debounced search: \(debouncedText)")
                                 searchAction(debouncedText)
                             }
                             
                         }
-                        print("User typed: \(newValue)")
+                        // print("User typed: \(newValue)")
                         
                     }
                 
