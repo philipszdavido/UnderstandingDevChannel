@@ -12,6 +12,7 @@ struct FilterButton: View {
     public var buttonText: String = ""
     public var selectedFilter: VideoFilterType
     public var action: @MainActor () -> Void
+    @Environment(\.colorScheme) var colorScheme
     
     var isSelected: Bool {
         switch selectedFilter {
@@ -26,21 +27,31 @@ struct FilterButton: View {
         }
     }
     
+    var fillColor: Color {
+        if isSelected {
+            return Color.gray.opacity(0.9)
+        }
+        
+        return Color.gray.opacity(0.5)
+    }
+    
     var body: some View {
+        
         Button((buttonText)) {
             action()
         }
         .padding(9)
         .background(
-                    RoundedRectangle(
-                        cornerRadius: 8,
-                        style: .continuous
-                    )
-                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                    .fill(isSelected ? Color.gray.opacity(0.8) : Color.gray.opacity(0.2))
-
-                )
-        .foregroundColor(.black)
+            RoundedRectangle(
+                cornerRadius: 8,
+                style: .continuous
+            )
+            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+            .fill(fillColor)
+            
+        )
+        .foregroundColor(colorScheme == .dark ? .white : .black)
+        
     }
     
     init(

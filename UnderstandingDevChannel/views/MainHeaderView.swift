@@ -14,7 +14,8 @@ struct MainHeaderView: View {
     private let debounceDelay = 0.3
     @State private var debouncedText: String = ""
     public var searchAction: (_ results: Any) -> Void = { results in }
-    
+    public var cancelSearchAction: () -> Void = {}
+
     var body: some View {
         HStack {
             
@@ -54,6 +55,7 @@ struct MainHeaderView: View {
                             .padding(.trailing, 8)
                             .onTapGesture {
                                 searchText = ""
+                                cancelSearchAction()
                             }
                     }
                     .onChange(of: searchText) { newValue in
@@ -78,6 +80,8 @@ struct MainHeaderView: View {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     
                     displaySearch.toggle()
+                    searchText = ""
+                    cancelSearchAction()
                 }) {
                     Text("Cancel")
                 }
