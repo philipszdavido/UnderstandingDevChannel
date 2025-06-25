@@ -73,10 +73,22 @@ struct MainTabView: View {
     }
 }
 
+struct MainTabView_Previews: View {
+    
+    @StateObject var settings = GlobalSettings()
+    
+    var body: some View {
+        MainTabView()
+            .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+        //        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            .environmentObject(settings)
+            .preferredColorScheme(settings.selectedScheme.colorScheme)
+        
+    }
+}
+
 #Preview {
 
-    MainTabView()
-        .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-//        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-        .environmentObject(GlobalSettings.shared)
+    MainTabView_Previews()
+    
 }

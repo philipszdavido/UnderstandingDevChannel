@@ -68,5 +68,6 @@ struct FilterButton: View {
 #Preview {
     FilterButton(buttonText: "All", selectedFilter: .all, action: {})
     FilterButton(buttonText: "Popular", selectedFilter: .mostLiked, action: {})
-    FilterButton(buttonText: "Most Liked", selectedFilter: .all, action: {})
+        .preferredColorScheme(.light)
+    FilterButton(buttonText: "Most Liked", selectedFilter: .all, action: {}).preferredColorScheme(.dark)
 }

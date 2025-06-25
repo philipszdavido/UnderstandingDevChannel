@@ -14,9 +14,7 @@ enum AppearanceMode: String {
 }
 
 struct SettingsUIView: View {
-    
-    @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
-    
+        
     var body: some View {
 
         NavigationView {
@@ -38,40 +36,55 @@ struct SettingsUIView: View {
     }
 }
 
+struct _AppearanceModeView: View {
+    @EnvironmentObject var settings: GlobalSettings
+
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("Appearance Mode")
+                    .font(.headline)
+
+                Picker("Appearance Mode", selection: $settings.selectedScheme) {
+                    Text("System").tag(AppColorScheme.system)
+                    Text("Light").tag(AppColorScheme.light)
+                    Text("Dark").tag(AppColorScheme.dark)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+            }
+            .padding()
+            Spacer()
+        }
+        .listSectionSeparator(.hidden)
+    }
+}
+
 struct AppearanceModeView: View {
     
-    @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
-
+    @EnvironmentObject var settings: GlobalSettings
+    
     var body: some View {
         Section {
             VStack(alignment: .leading, spacing: 20) {
                     Text("Appearance Mode")
                         .font(.headline)
                 
-                Toggle("Dark Mode", isOn: Binding<Bool>(
-                    get: {
-                        self.appearanceMode == .dark
-                    },
+                Toggle("Dark Mode", isOn: Binding(
+                    get: { settings.selectedScheme == .dark },
                     set: { newValue in
-                        self.appearanceMode = newValue ? .dark : .system
+                        if newValue { settings.selectedScheme = .dark }
                     }
                 ))
-                
-                Toggle("Light Mode", isOn: Binding<Bool>(
-                    get: {
-                        self.appearanceMode == .light
-                    },
+                Toggle("Light Mode", isOn: Binding(
+                    get: { settings.selectedScheme == .light },
                     set: { newValue in
-                        self.appearanceMode = newValue ? .light : .system
+                        if newValue { settings.selectedScheme = .light }
                     }
                 ))
-                
-                Toggle("System Mode", isOn: Binding<Bool>(
-                    get: {
-                        self.appearanceMode == .system
-                    },
+                Toggle("System Mode", isOn: Binding(
+                    get: { settings.selectedScheme == .system },
                     set: { newValue in
-                        self.appearanceMode = newValue ? .system : .dark
+                        if newValue { settings.selectedScheme = .system }
                     }
                 ))
             }
@@ -84,12 +97,12 @@ struct AppearanceModeView: View {
 
 struct SettingsUIView_Preview: View {
 
-    @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .dark
+    @StateObject var settings = GlobalSettings()
 
     var body: some View {
         SettingsUIView()
-            
-            .preferredColorScheme(appearanceMode == .system ? nil : (appearanceMode == .dark ? .dark : .light))
+            .environmentObject(settings)
+            .preferredColorScheme(settings.selectedScheme.colorScheme)
 
     }
 }

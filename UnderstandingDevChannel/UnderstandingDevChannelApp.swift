@@ -10,9 +10,7 @@ import SwiftUI
 @main
 struct UnderstandingDevChannelApp: App {
     let persistenceController = PersistenceController.shared
-    let globalSettings = GlobalSettings.shared
-    @AppStorage("appearanceMode") var appearanceMode: AppearanceMode = .system
-
+    @StateObject var globalSettings = GlobalSettings.shared
         
     var body: some Scene {
         WindowGroup {
@@ -20,8 +18,8 @@ struct UnderstandingDevChannelApp: App {
                 MainTabView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .environmentObject(globalSettings)
-                    .preferredColorScheme(appearanceMode == .system ? nil : (appearanceMode == .dark ? .dark : .light))
-                
+                    .preferredColorScheme(globalSettings.selectedScheme.colorScheme)
+
         }
     }
 }

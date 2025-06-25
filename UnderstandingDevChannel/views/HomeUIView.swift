@@ -204,7 +204,9 @@ struct HomeUIView: View {
 }
 
 struct HomeUIView_Previews: PreviewProvider {
+        
     static var previews: some View {
+        @StateObject var settings = GlobalSettings()
         let response = generateMockVideoResourceResponse()
         let context = PersistenceController.preview.container.viewContext
         let videoInfoEntity = SearchListResponseInfoEntity(context: context)
@@ -243,9 +245,13 @@ struct HomeUIView_Previews: PreviewProvider {
             
         }
 
-        return HomeUIView().environment(\.managedObjectContext, context)
+        return HomeUIView()
+            .environment(\.managedObjectContext, context)
+            .environmentObject(settings)
+            .preferredColorScheme(settings.selectedScheme.colorScheme)
     }
 }
+
 #Preview {
     HomeUIView_Previews.previews
 }
