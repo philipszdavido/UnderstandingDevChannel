@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24D81" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ContentDetailsEntity" representedClassName="ContentDetailsEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="itemCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="HighEntity" representedClassName="HighEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="height" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="width" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="PageInfoEntity" representedClassName="PageInfoEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="nextPageToken" optional="YES" attributeType="String"/>
+        <attribute name="prevPageToken" optional="YES" attributeType="String"/>
+        <attribute name="resultsPerPage" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalResults" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="PlayListItemContentDetailsEntity" representedClassName="PlayListItemContentDetailsEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="videoId" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="PlayListItemResourceEntity" representedClassName="PlayListItemResourceEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="kind" optional="YES" attributeType="String"/>
+        <relationship name="contentDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlayListItemContentDetailsEntity"/>
+        <relationship name="snippet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SnippetEntity"/>
+    </entity>
+    <entity name="PlaylistResourceEntity" representedClassName="PlaylistResourceEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="kind" optional="YES" attributeType="String"/>
+        <relationship name="contentDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ContentDetailsEntity"/>
+        <relationship name="snippet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SnippetEntity"/>
+    </entity>
+    <entity name="PlaylistResourceResponseEntity" representedClassName="PlaylistResourceResponseEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="nextPageToken" optional="YES" attributeType="String"/>
+        <attribute name="prevPageToken" optional="YES" attributeType="String"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlaylistResourceEntity"/>
+        <relationship name="pageInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PageInfoEntity"/>
+    </entity>
+    <entity name="SearchListResponseEntity" representedClassName="SearchListResponseEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="kind" optional="YES" attributeType="String"/>
+        <relationship name="snippet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SnippetEntity"/>
+    </entity>
+    <entity name="SearchListResponseInfoEntity" representedClassName="SearchListResponseInfoEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="nextPageToken" optional="YES" attributeType="String"/>
+        <attribute name="prevPageToken" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="SnippetEntity" representedClassName="SnippetEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="channelId" optional="YES" attributeType="String"/>
+        <attribute name="channelTitle" optional="YES" attributeType="String"/>
+        <attribute name="descriptionInfo" optional="YES" attributeType="String"/>
+        <attribute name="publishedAt" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="thumbnails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ThumbnailsEntity"/>
+    </entity>
+    <entity name="ThumbnailsEntity" representedClassName="ThumbnailsEntity" syncable="YES" codeGenerationType="class">
+        <relationship name="high" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HighEntity"/>
+    </entity>
+</model>
